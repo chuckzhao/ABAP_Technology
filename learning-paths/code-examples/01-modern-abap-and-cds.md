@@ -1,4 +1,4 @@
-# Modern ABAP Syntax and CDS Views - Code Examples
+# Modern ABAP Syntax and CDS Entity Views - Code Examples
 
 ## Part 1: Modern ABAP Syntax
 
@@ -45,7 +45,7 @@ DATA(lv_status) = COND #( WHEN ls_order-status = 'A' THEN 'Active'
 ### 1.3 String Templates
 ```abap
 " Old way
-CONCATENATE 'Order' lv_order 'for customer' lv_customer 
+CONCATENATE 'Order' lv_order 'for customer' lv_customer
   INTO lv_message SEPARATED BY space.
 
 " Modern way
@@ -58,7 +58,7 @@ DATA(lv_date) = |Date: { lv_datum DATE = USER }|.
 
 ### 1.4 Method Chaining and Functional Programming
 ```abap
-DATA(lv_result) = cl_abap_typedescr=>describe_by_data( ls_data 
+DATA(lv_result) = cl_abap_typedescr=>describe_by_data( ls_data
                   )->get_relative_name( ).
 
 " Functional style iteration with REDUCE
@@ -67,21 +67,20 @@ DATA(lv_total) = REDUCE netwr( INIT sum = 0
                                 NEXT sum = sum + line-netwr ).
 
 " FILTER operator
-DATA(lt_high_value) = FILTER #( lt_items USING KEY primary_key 
+DATA(lt_high_value) = FILTER #( lt_items USING KEY primary_key
                                 WHERE netwr > 1000 ).
 ```
 
 ---
 
-## Part 2: CDS Views Examples
+## Part 2: CDS Entity Views (Modern Approach)
 
-### 2.1 Basic CDS View
+### 2.1 Basic CDS Entity View
+
 ```abap
-@AbapCatalog.sqlViewName: 'ZCUSTOMER_V'
-@AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Customer Basic View'
-define view Z_Customer_Basic
+define view entity ZI_Customer_Basic
   as select from kna1
 {
   key kunnr as CustomerId,
@@ -93,17 +92,22 @@ define view Z_Customer_Basic
 where kunnr <> ''
 ```
 
-### 2.2 CDS View with Associations
+**Key Differences from DDIC-based Views:**
+- ✅ Uses `define view entity` (not `define view`)
+- ✅ No `@AbapCatalog.sqlViewName` annotation (no DDIC view created)
+- ✅ No `@AbapCatalog.compiler.compareFilter` (deprecated)
+- ✅ Direct consumption without database view layer
+
+### 2.2 CDS Entity View with Associations
+
 ```abap
-@AbapCatalog.sqlViewName: 'ZSALESORDER_V'
-@AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Sales Order with Associations'
-define view Z_SalesOrder
+define view entity ZI_SalesOrder
   as select from vbak
-  association [0..1] to Z_Customer_Basic as _Customer 
+  association [0..1] to ZI_Customer_Basic as _Customer
     on $projection.SoldToParty = _Customer.CustomerId
-  association [0..*] to Z_SalesOrderItem as _Items
+  association [0..*] to ZI_SalesOrderItem as _Items
     on $projection.SalesDocument = _Items.SalesDocument
 {
   key vbeln as SalesDocument,
@@ -111,47 +115,45 @@ define view Z_SalesOrder
       kunnr as SoldToParty,
       netwr as NetAmount,
       waerk as Currency,
-      
+
       // Exposing associations
       _Customer,
       _Items
 }
 ```
 
-### 2.3 CDS View with Path Expressions
+### 2.3 CDS Entity View with Path Expressions
+
 ```abap
-@AbapCatalog.sqlViewName: 'ZSALESORD_DET'
-@AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Sales Order Details'
-define view Z_SalesOrder_Details
+define view entity ZI_SalesOrder_Details
   as select from vbak
-  association [0..1] to Z_Customer_Basic as _Customer 
+  association [0..1] to ZI_Customer_Basic as _Customer
     on $projection.SoldToParty = _Customer.CustomerId
 {
   key vbeln as SalesDocument,
       erdat as CreatedOn,
       kunnr as SoldToParty,
-      
+
       // Using path expression to access associated data
       _Customer.CustomerName,
       _Customer.City,
       _Customer.Country,
-      
+
       netwr as NetAmount,
       waerk as Currency,
-      
+
       _Customer
 }
 ```
 
-### 2.4 CDS View with Parameters
+### 2.4 CDS Entity View with Parameters
+
 ```abap
-@AbapCatalog.sqlViewName: 'ZSALES_PARAM'
-@AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Sales Orders by Date Range'
-define view Z_SalesOrder_ByDate
+define view entity ZI_SalesOrder_ByDate
   with parameters
     p_from_date : vbak.erdat,
     p_to_date   : vbak.erdat
@@ -166,13 +168,12 @@ define view Z_SalesOrder_ByDate
 where erdat between :p_from_date and :p_to_date
 ```
 
-### 2.5 CDS View with Calculations and CASE
+### 2.5 CDS Entity View with Calculations and CASE
+
 ```abap
-@AbapCatalog.sqlViewName: 'ZSALES_CALC'
-@AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Sales Order with Calculations'
-define view Z_SalesOrder_Calculated
+define view entity ZI_SalesOrder_Calculated
   as select from vbak
 {
   key vbeln as SalesDocument,
@@ -180,19 +181,19 @@ define view Z_SalesOrder_Calculated
       kunnr as SoldToParty,
       netwr as NetAmount,
       waerk as Currency,
-      
+
       // Calculation
       cast(netwr as abap.dec(15,2)) * 1.19 as GrossAmount,
-      
+
       // CASE statement for status
       case vbak.vbtyp
         when 'C' then 'Order'
         when 'G' then 'Contract'
         else 'Other'
       end as DocumentType,
-      
+
       // Conditional calculation
-      case 
+      case
         when netwr < 1000 then 1
         when netwr < 10000 then 2
         else 3
@@ -200,50 +201,49 @@ define view Z_SalesOrder_Calculated
 }
 ```
 
-### 2.6 Analytical CDS View
+### 2.6 Analytical CDS Entity View (Cube)
+
 ```abap
-@AbapCatalog.sqlViewName: 'ZSALES_CUBE'
-@AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Sales Analysis Cube'
 @Analytics.dataCategory: #CUBE
-define view Z_Sales_Cube
+define view entity ZI_Sales_Cube
   as select from vbak
-  association [0..1] to Z_Customer_Basic as _Customer 
+  association [0..1] to ZI_Customer_Basic as _Customer
     on $projection.SoldToParty = _Customer.CustomerId
 {
   @Analytics.dimension: true
   key vbeln as SalesDocument,
-  
+
   @Analytics.dimension: true
   kunnr as SoldToParty,
-  
+
   @Analytics.dimension: true
   _Customer.Country,
-  
+
   @Analytics.dimension: true
   erdat as CreatedOn,
-  
+
   @Semantics.currencyCode: true
   waerk as Currency,
-  
+
   @DefaultAggregation: #SUM
   @Semantics.amount.currencyCode: 'Currency'
   netwr as NetAmount,
-  
+
   @DefaultAggregation: #SUM
   cast(1 as abap.int4) as OrderCount,
-  
+
   _Customer
 }
 ```
 
-### 2.7 CDS View with UI Annotations
+### 2.7 Consumption View (Projection) with UI Annotations
+
 ```abap
-@AbapCatalog.sqlViewName: 'ZSALES_UI'
-@AbapCatalog.compiler.compareFilter: true
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Sales Order for UI'
+@Metadata.allowExtensions: true
 
 @UI: {
   headerInfo: {
@@ -254,10 +254,8 @@ define view Z_Sales_Cube
 }
 
 @Search.searchable: true
-define view Z_SalesOrder_UI
-  as select from vbak
-  association [0..1] to Z_Customer_Basic as _Customer 
-    on $projection.SoldToParty = _Customer.CustomerId
+define view entity ZC_SalesOrder
+  as projection on ZI_SalesOrder
 {
   @UI.facet: [
     { id: 'GeneralInfo',
@@ -266,63 +264,162 @@ define view Z_SalesOrder_UI
       label: 'General Information',
       position: 10 }
   ]
-  
+
   @UI: {
     lineItem: [{ position: 10, importance: #HIGH }],
     identification: [{ position: 10 }],
     selectionField: [{ position: 10 }]
   }
   @Search.defaultSearchElement: true
-  key vbeln as SalesDocument,
-  
+  key SalesDocument,
+
   @UI: {
     lineItem: [{ position: 20, importance: #HIGH }],
     identification: [{ position: 20 }],
     selectionField: [{ position: 20 }]
   }
-  erdat as CreatedOn,
-  
+  CreatedOn,
+
   @UI: {
     lineItem: [{ position: 30, importance: #HIGH }],
     identification: [{ position: 30 }]
   }
   @Consumption.valueHelpDefinition: [{
-    entity: { name: 'Z_Customer_Basic', element: 'CustomerId' }
+    entity: { name: 'ZI_Customer_Basic', element: 'CustomerId' }
   }]
-  kunnr as SoldToParty,
-  
+  SoldToParty,
+
   @UI: {
     lineItem: [{ position: 40, importance: #HIGH }],
     identification: [{ position: 40 }]
   }
-  @Semantics.amount.currencyCode: 'Currency'
-  netwr as NetAmount,
-  
-  @Semantics.currencyCode: true
-  waerk as Currency,
-  
-  _Customer
+  NetAmount,
+
+  Currency,
+
+  /* Associations */
+  _Customer,
+  _Items
+}
+```
+
+### 2.8 Transactional View with Draft
+
+```abap
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Travel Booking - Transactional'
+define view entity ZI_Travel
+  as select from ztravel
+  association [0..*] to ZI_Booking as _Booking
+    on $projection.TravelId = _Booking.TravelId
+{
+  key travel_id     as TravelId,
+      @Semantics.user.createdBy: true
+      created_by    as CreatedBy,
+      @Semantics.systemDateTime.createdAt: true
+      created_at    as CreatedAt,
+      @Semantics.user.lastChangedBy: true
+      changed_by    as ChangedBy,
+      @Semantics.systemDateTime.lastChangedAt: true
+      changed_at    as ChangedAt,
+      description   as Description,
+      customer_id   as CustomerId,
+      begin_date    as BeginDate,
+      end_date      as EndDate,
+      @Semantics.amount.currencyCode: 'CurrencyCode'
+      total_price   as TotalPrice,
+      @Semantics.currencyCode: true
+      currency_code as CurrencyCode,
+      status        as Status,
+
+      /* Associations */
+      _Booking
+}
+```
+
+### 2.9 Virtual Elements (Calculated at Runtime)
+
+```abap
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Product with Virtual Elements'
+define view entity ZI_Product
+  as select from mara
+{
+  key matnr      as ProductId,
+      mtart      as ProductType,
+      matkl      as ProductGroup,
+      meins      as BaseUnit,
+
+      // Virtual element - calculated at runtime by CDS view implementation
+      @ObjectModel.virtualElement: true
+      @ObjectModel.virtualElementCalculatedBy: 'ABAP:ZCL_PRODUCT_VIRTUAL'
+      cast( '' as abap.char( 50 ) ) as ProductDescription,
+
+      @ObjectModel.virtualElement: true
+      @ObjectModel.virtualElementCalculatedBy: 'ABAP:ZCL_PRODUCT_VIRTUAL'
+      cast( 0 as abap.int4 ) as StockLevel
 }
 ```
 
 ---
 
+## Part 3: Comparison - DDIC-based vs Entity Views
+
+### DDIC-based CDS View (Old - Deprecated)
+```abap
+@AbapCatalog.sqlViewName: 'ZCUSTOMER_V'  // Creates database view
+@AbapCatalog.compiler.compareFilter: true // Deprecated
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Customer'
+define view Z_Customer
+  as select from kna1
+{
+  key kunnr as CustomerId,
+      name1 as CustomerName
+}
+```
+
+### CDS Entity View (New - Recommended)
+```abap
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: 'Customer'
+define view entity ZI_Customer  // No database view created
+  as select from kna1
+{
+  key kunnr as CustomerId,
+      name1 as CustomerName
+}
+```
+
+### Key Advantages of CDS Entity Views:
+1. ✅ **No DDIC layer** - Direct consumption, better performance
+2. ✅ **Cleaner syntax** - No need for sqlViewName annotation
+3. ✅ **Better tooling support** - Enhanced ADT features
+4. ✅ **Future-proof** - SAP's recommended approach
+5. ✅ **RAP compatibility** - Required for RAP-based applications
+6. ✅ **Simplified deployment** - No transport of DDIC objects
+
+---
+
 ## Quick Reference
 
-### CDS View Naming Conventions
-- **I_**: Interface views (basic, reusable)
-- **C_**: Consumption views (for UI/reporting)
-- **P_**: Private views (internal use)
-- **Z_** or **Y_**: Custom views
+### CDS Entity View Naming Conventions (VDM-Style)
+- **ZI_**: Interface views (basic, reusable layer)
+- **ZC_**: Consumption views (projection for UI/API)
+- **ZP_**: Private views (internal use only)
+- **ZE_**: Extension views (customer extensions)
+- **ZR_**: Remote views (for remote APIs)
 
 ### Common Annotations
-- `@AbapCatalog.sqlViewName` - Database view name (max 16 chars)
 - `@EndUserText.label` - Description
 - `@AccessControl.authorizationCheck` - Authorization check level
+- `@Metadata.allowExtensions` - Allow metadata extensions
 - `@Search.searchable` - Enable search
 - `@UI.*` - UI rendering hints
-- `@Semantics.*` - Semantic information (amount, quantity, etc.)
+- `@Semantics.*` - Semantic information (amount, quantity, user, date)
 - `@Consumption.*` - Value helps and consumption behavior
+- `@ObjectModel.*` - Object model settings (associations, virtual elements)
+- `@Analytics.*` - Analytics annotations (for cubes/queries)
 
 ### Association Cardinality
 - `[1]` - Exactly one
@@ -330,6 +427,53 @@ define view Z_SalesOrder_UI
 - `[1..*]` - One or more
 - `[0..*]` - Zero or more
 
+### Semantic Annotations Examples
+```abap
+@Semantics.amount.currencyCode: 'Currency'
+amount as Amount,
+
+@Semantics.currencyCode: true
+waers as Currency,
+
+@Semantics.quantity.unitOfMeasure: 'Unit'
+quantity as Quantity,
+
+@Semantics.unitOfMeasure: true
+meins as Unit,
+
+@Semantics.user.createdBy: true
+created_by as CreatedBy,
+
+@Semantics.systemDateTime.createdAt: true
+created_at as CreatedAt,
+
+@Semantics.user.lastChangedBy: true
+changed_by as ChangedBy,
+
+@Semantics.systemDateTime.lastChangedAt: true
+changed_at as ChangedAt
+```
+
+---
+
+## Best Practices
+
+### ✅ DO:
+- Use `define view entity` for all new CDS views
+- Follow VDM naming conventions (ZI_, ZC_)
+- Use semantic annotations for amounts, currencies, dates
+- Expose associations for flexibility
+- Use projections (ZC_) for UI-specific requirements
+- Enable draft for transactional applications
+
+### ❌ DON'T:
+- Use `define view` (DDIC-based) - it's deprecated
+- Use `@AbapCatalog.sqlViewName` in new views
+- Mix interface and consumption concerns in one view
+- Hardcode values - use parameters instead
+- Forget authorization checks in production
+
 ---
 
 *Last updated: December 2025*
+*Uses CDS Entity Views (SAP-recommended approach)*
