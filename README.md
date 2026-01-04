@@ -1,16 +1,27 @@
 # ABAP Technology Learning Repository
 
+[![CI](../../actions/workflows/ci.yml/badge.svg)](../../actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
 A comprehensive repository for learning modern SAP ABAP development on S/4HANA, featuring extensive code examples, best practices, and a structured 16-week learning path.
 
 ## 📚 Repository Structure
 
 ```
 ABAP_Technology/
-├── NAMING_CONVENTIONS.md          # Comprehensive ABAP naming conventions guide
-├── README.md                       # This file
-├── LICENSE                         # MIT License
+├── .github/
+│   ├── workflows/ci.yml              # CI/CD pipeline
+│   ├── ISSUE_TEMPLATE/               # Issue templates
+│   └── pull_request_template.md      # PR template
+├── NAMING_CONVENTIONS.md             # Comprehensive ABAP naming conventions guide
+├── CONTRIBUTING.md                   # Contribution guidelines
+├── CODE_OF_CONDUCT.md                # Community guidelines
+├── CHANGELOG.md                      # Version history
+├── README.md                         # This file
+├── LICENSE                           # MIT License
 └── learning-paths/
-    ├── modern-sap-complete-path.md    # 16-week structured learning plan
+    ├── modern-sap-complete-path.md   # 16-week structured learning plan
     ├── code-examples/
     │   ├── 01-modern-abap-and-cds.md
     │   ├── 02-rap-business-objects.md
@@ -20,9 +31,9 @@ ABAP_Technology/
     │   ├── 06-workflow-background-jobs.md
     │   └── 07-debugging-troubleshooting.md
     ├── notes/
-    │   └── progress-tracker.md        # Track your learning progress
+    │   └── progress-tracker.md       # Track your learning progress
     └── resources/
-        └── useful-links.md            # Curated SAP resources and links
+        └── useful-links.md           # Curated SAP resources and links
 ```
 
 ## 🚀 Quick Start
@@ -181,13 +192,15 @@ Check out the [**Useful Links**](learning-paths/resources/useful-links.md) for:
 
 ## 🤝 Contributing
 
-Contributions are welcome! If you have:
+Contributions are welcome! Please read our [**Contributing Guidelines**](CONTRIBUTING.md) before submitting.
+
+We accept:
 - Additional code examples
 - Improvements to existing examples
 - Bug fixes or corrections
 - New learning resources
 
-Please feel free to submit a pull request.
+See our [Code of Conduct](CODE_OF_CONDUCT.md) for community standards.
 
 ## 📜 License
 
@@ -212,6 +225,6 @@ Learning modern S/4HANA development with emphasis on:
 
 ---
 
-*Last updated: December 2025*
+*Last updated: January 2026*
 *Total Code Examples: 7 comprehensive guides*
 *Coverage: Beginner to Advanced*
