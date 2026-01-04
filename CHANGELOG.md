@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## [Unreleased]
 
 ### Added
+
 - `.gitignore` file for excluding IDE and system files
 - `CONTRIBUTING.md` with contribution guidelines
 - `CODE_OF_CONDUCT.md` for community standards
@@ -15,11 +16,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - `.markdownlint.json` configuration for consistent markdown formatting
 
 ### Changed
+
 - Improved repository documentation structure
 
 ## [1.0.0] - 2025-12-01
 
 ### Added
+
 - Initial release of ABAP Technology learning repository
 - Comprehensive README with quick start guides
 - 16-week structured learning path (`modern-sap-complete-path.md`)
@@ -37,6 +40,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - MIT License
 
 ### Topics Covered
+
 - Modern ABAP syntax (inline declarations, constructor operators, string templates)
 - Core Data Services (CDS) views with annotations
 - ABAP RESTful Application Programming Model (RAP)
@@ -51,6 +55,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Version History Summary
 
-| Version | Date | Description |
-|---------|------|-------------|
-| 1.0.0 | 2025-12-01 | Initial release with complete learning path |
+| Version | Date       | Description                              |
+|---------|------------|------------------------------------------|
+| 1.0.0   | 2025-12-01 | Initial release with complete learning path |

@@ -5,22 +5,15 @@ Thank you for your interest in contributing to the ABAP Technology learning repo
 ## Table of Contents
 
 - [Code of Conduct](#code-of-conduct)
-- [How Can I Contribute?](#how-can-i-contribute)
-  - [Reporting Issues](#reporting-issues)
-  - [Suggesting Enhancements](#suggesting-enhancements)
-  - [Adding Code Examples](#adding-code-examples)
-  - [Improving Documentation](#improving-documentation)
+- [How Can I Contribute](#how-can-i-contribute)
 - [Style Guidelines](#style-guidelines)
-  - [ABAP Code Style](#abap-code-style)
-  - [Markdown Style](#markdown-style)
-  - [Commit Messages](#commit-messages)
 - [Pull Request Process](#pull-request-process)
 
 ## Code of Conduct
 
 This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior by opening an issue.
 
-## How Can I Contribute?
+## How Can I Contribute
 
 ### Reporting Issues
 
@@ -52,26 +45,30 @@ When contributing new code examples:
 
 #### Code Example Template
 
-```markdown
+````markdown
 ## Topic Name
 
 ### Description
+
 Brief explanation of what this example demonstrates.
 
 ### Bad Practice (Legacy Approach)
+
 ```abap
 " Show what NOT to do
 ```
 
 ### Good Practice (Modern Approach)
+
 ```abap
 " Show the recommended approach
 ```
 
 ### Key Points
+
 - Point 1
 - Point 2
-```
+````
 
 ### Improving Documentation
 
@@ -112,7 +109,7 @@ Follow these ABAP coding standards:
 ### Markdown Style
 
 1. **Use proper heading hierarchy**: Start with `#` for document title, then `##`, `###`, etc.
-2. **Use fenced code blocks**: Always specify the language (```abap, ```json, etc.)
+2. **Use fenced code blocks**: Always specify the language (abap, json, etc.)
 3. **Add blank lines**: Between sections and before/after code blocks
 4. **Use consistent list markers**: Use `-` for unordered lists
 5. **Validate links**: Ensure all links are working
@@ -121,13 +118,14 @@ Follow these ABAP coding standards:
 
 Write clear and meaningful commit messages:
 
-```
-<type>: <subject>
+```text
+type: subject
 
-<body>
+body
 ```
 
 **Types:**
+
 - `feat`: New feature or example
 - `fix`: Bug fix or correction
 - `docs`: Documentation changes
@@ -136,7 +134,8 @@ Write clear and meaningful commit messages:
 - `test`: Adding tests
 
 **Examples:**
-```
+
+```text
 feat: Add CDS view example for sales order analysis
 
 docs: Update RAP documentation with behavior pool details
@@ -166,7 +165,7 @@ Before submitting a PR, ensure:
 - [ ] Commit messages are clear and descriptive
 - [ ] Documentation is updated if needed
 
-## Questions?
+## Questions
 
 If you have questions about contributing, feel free to open an issue with the `[Question]` prefix.
 
