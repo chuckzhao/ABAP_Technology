@@ -1,0 +1,27 @@
+# Exception Handling - Anki Deck
+# Format: Front TAB Back
+# Import into Anki: File > Import, select "Tab" as separator
+
+What are the three exception class hierarchies in ABAP?	cx_static_check (must be declared), cx_dynamic_check (optional declaration), cx_no_check (cannot be declared)
+How do you define a custom exception class?	CLASS zcx_my_error DEFINITION INHERITING FROM cx_static_check.
+What interface enables T100 messages in exceptions?	if_t100_message
+How do you raise an exception?	RAISE EXCEPTION TYPE zcx_my_error EXPORTING textid = zcx_my_error=>error_code param = value.
+How do you catch a specific exception?	TRY. ... CATCH zcx_specific_error INTO DATA(lx_error). ENDTRY.
+How do you catch multiple exception types?	TRY. ... CATCH zcx_error1 zcx_error2 INTO DATA(lx_error). ENDTRY.
+How do you get exception message text?	lx_error->get_text( )
+How do you get long text from exception?	lx_error->get_longtext( )
+What is the previous exception used for?	Chain exceptions to preserve original cause: EXPORTING previous = lx_original
+How do you access the previous exception?	lx_error->previous
+What is the CLEANUP block for?	Execute cleanup code even if exception occurs - for releasing resources
+What is the syntax for TRY-CATCH-CLEANUP?	TRY. ... CATCH zcx_error. ... CLEANUP. ... release resources ... ENDTRY.
+How do you re-raise a caught exception?	CATCH zcx_error INTO DATA(lx). ... RAISE EXCEPTION lx.
+How do you define exception message constants?	CONSTANTS: BEGIN OF error_not_found, msgid TYPE symsgid VALUE 'ZMSG', msgno TYPE symsgno VALUE '001', attr1 TYPE scx_attrname VALUE 'MV_ID', END OF error_not_found.
+How do you add attributes to exception class?	DATA: mv_object_id TYPE string READ-ONLY. Set in constructor.
+What is the RESUMABLE addition for?	Allows caller to resume execution after handling: RAISE RESUMABLE EXCEPTION TYPE zcx_warning.
+How do you resume after resumable exception?	CATCH BEFORE UNWIND zcx_warning. RESUME.
+When should you use cx_static_check?	When caller should always handle the exception - business errors
+When should you use cx_dynamic_check?	Programming errors that indicate bugs - like parameter validation
+What is the best practice for exception granularity?	Create specific exceptions (zcx_customer_not_found) rather than generic ones
+How do you convert system exception to custom?	CATCH cx_sy_sql_error INTO DATA(lx). RAISE EXCEPTION TYPE zcx_db_error EXPORTING previous = lx.
+What should you NOT do with cx_root catch?	Don't catch cx_root and silently ignore - always handle or re-raise
+How do you create message from exception for user?	MESSAGE lx_error TYPE 'E'.

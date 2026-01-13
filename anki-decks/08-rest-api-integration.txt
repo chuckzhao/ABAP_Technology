@@ -1,0 +1,31 @@
+# REST API and Integration - Anki Deck
+# Format: Front TAB Back
+# Import into Anki: File > Import, select "Tab" as separator
+
+What interface is used for HTTP service extension?	if_http_service_extension
+What method handles incoming HTTP requests?	handle_request
+How do you get the HTTP method from request?	DATA(lv_method) = request->get_method( ).
+What are the HTTP method constants?	if_web_http_client=>get, if_web_http_client=>post, if_web_http_client=>put, if_web_http_client=>delete
+How do you get request body text?	DATA(lv_body) = request->get_text( ).
+How do you set response text?	response->set_text( lv_json ).
+How do you set HTTP status code?	response->set_status( 200 ).
+How do you set response header?	response->set_header_field( i_name = 'Content-Type' i_value = 'application/json' ).
+How do you serialize ABAP data to JSON?	DATA(lv_json) = /ui2/cl_json=>serialize( data = lt_data compress = abap_false pretty_name = /ui2/cl_json=>pretty_mode-camel_case ).
+How do you deserialize JSON to ABAP?	/ui2/cl_json=>deserialize( EXPORTING json = lv_json CHANGING data = ls_data ).
+What HTTP status code means OK?	200
+What HTTP status code means Created?	201
+What HTTP status code means Bad Request?	400
+What HTTP status code means Unauthorized?	401
+What HTTP status code means Forbidden?	403
+What HTTP status code means Not Found?	404
+What HTTP status code means Method Not Allowed?	405
+What HTTP status code means Internal Server Error?	500
+How do you create HTTP client for external API?	DATA(lo_client) = cl_web_http_client_manager=>create_by_http_destination( i_destination = cl_http_destination_provider=>create_by_url( i_url = 'https://api.example.com' ) ).
+How do you set request URI path?	lo_request->set_uri_path( |/v1/data?id={ lv_id }| ).
+How do you set authorization header?	lo_request->set_header_field( i_name = 'Authorization' i_value = 'Bearer TOKEN' ).
+How do you execute HTTP request?	DATA(lo_response) = lo_client->execute( i_method = if_web_http_client=>get ).
+How do you get response status code?	lo_response->get_status( )-code
+How do you close HTTP client connection?	lo_client->close( ).
+How do you call a BAPI function?	CALL FUNCTION 'BAPI_...' EXPORTING ... IMPORTING ... TABLES return = lt_messages.
+How do you commit BAPI changes?	CALL FUNCTION 'BAPI_TRANSACTION_COMMIT' EXPORTING wait = abap_true.
+How do you check for BAPI errors?	IF line_exists( lt_messages[ type = 'E' ] ).

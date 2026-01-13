@@ -1,0 +1,33 @@
+# ABAP Unit Testing - Anki Deck
+# Format: Front TAB Back
+# Import into Anki: File > Import, select "Tab" as separator
+
+How do you define a test class?	CLASS ltc_test DEFINITION FOR TESTING DURATION SHORT RISK LEVEL HARMLESS.
+What are the DURATION options for test class?	SHORT, MEDIUM, LONG
+What are the RISK LEVEL options?	HARMLESS, DANGEROUS, CRITICAL
+What method runs once before all tests in the class?	class_setup (CLASS-METHODS)
+What method runs once after all tests in the class?	class_teardown (CLASS-METHODS)
+What method runs before each test method?	setup
+What method runs after each test method?	teardown
+How do you mark a method as a test?	METHOD test_something FOR TESTING.
+How do you assert two values are equal?	cl_abap_unit_assert=>assert_equals( act = lv_actual exp = lv_expected msg = 'Values should be equal' ).
+How do you assert two values are different?	cl_abap_unit_assert=>assert_differs( act = lv_actual exp = lv_not_expected msg = 'Values should differ' ).
+How do you assert a boolean is true?	cl_abap_unit_assert=>assert_true( act = lv_boolean msg = 'Should be true' ).
+How do you assert a boolean is false?	cl_abap_unit_assert=>assert_false( act = lv_boolean msg = 'Should be false' ).
+How do you assert a value is initial?	cl_abap_unit_assert=>assert_initial( act = lv_value msg = 'Should be initial' ).
+How do you assert a value is not initial?	cl_abap_unit_assert=>assert_not_initial( act = lv_value msg = 'Should not be initial' ).
+How do you assert an object reference is bound?	cl_abap_unit_assert=>assert_bound( act = lo_object msg = 'Should be bound' ).
+How do you fail a test explicitly?	cl_abap_unit_assert=>fail( msg = 'Test should not reach here' ).
+What is the Given-When-Then pattern?	Given: Setup test data. When: Execute code under test. Then: Assert expected results.
+How do you create a test double (mock)?	mo_mock = CAST #( cl_abap_testdouble=>create( 'ZIF_INTERFACE' ) ).
+How do you configure mock behavior?	cl_abap_testdouble=>configure_call( mo_mock )->returning( value ). mo_mock->method( ).
+How do you verify mock was called?	cl_abap_testdouble=>verify_expectations( mo_mock ).
+How do you test that an exception is raised?	TRY. method_call( ). cl_abap_unit_assert=>fail( 'Exception expected' ). CATCH zcx_expected. ENDTRY.
+How do you create CDS test environment?	environment = cl_cds_test_environment=>create( i_for_entity = 'ZI_ENTITY' ).
+How do you insert test data for CDS tests?	environment->insert_test_data( lt_test_data ).
+How do you clear test doubles between tests?	environment->clear_doubles( ).
+How do you destroy test environment?	environment->destroy( ).
+How do you rollback entity changes in tests?	ROLLBACK ENTITIES.
+What is a stub vs a mock?	Stub: Returns predefined values. Mock: Also verifies interactions/calls.
+How do you measure runtime in a test?	GET RUN TIME FIELD lv_start. ... GET RUN TIME FIELD lv_end. lv_runtime = lv_end - lv_start.
+What is dependency injection?	Pass dependencies (like repositories) via constructor to allow mocking in tests

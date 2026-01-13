@@ -1,0 +1,33 @@
+# ABAP Modern Syntax - Anki Deck
+# Format: Front TAB Back
+# Import into Anki: File > Import, select "Tab" as separator
+
+What is the modern way to declare a variable inline during SELECT?	SELECT * FROM vbak INTO TABLE @DATA(lt_orders).
+What is the modern way to declare a work area in a LOOP?	LOOP AT lt_orders INTO DATA(ls_order).
+How do you use the VALUE operator to create an internal table?	DATA(lt_materials) = VALUE tt_matnr( ( '000000000000000001' ) ( '000000000000000002' ) ).
+How do you use the CORRESPONDING operator?	DATA(ls_customer) = CORRESPONDING #( ls_kna1 ).
+How do you use the NEW operator to create an object?	DATA(lo_instance) = NEW zcl_my_class( iv_param = 'value' ).
+What is the syntax for COND conditional expression?	DATA(lv_status) = COND #( WHEN ls_order-status = 'A' THEN 'Active' WHEN ls_order-status = 'C' THEN 'Completed' ELSE 'Unknown' ).
+What is the old way to concatenate strings?	CONCATENATE 'Order' lv_order 'for customer' lv_customer INTO lv_message SEPARATED BY space.
+What is the modern way to concatenate strings using string templates?	DATA(lv_message) = |Order { lv_order } for customer { lv_customer }|.
+How do you format decimals in a string template?	DATA(lv_formatted) = |Amount: { lv_amount DECIMALS = 2 } { lv_currency }|.
+How do you format dates in a string template?	DATA(lv_date) = |Date: { lv_datum DATE = USER }|.
+How do you use method chaining in modern ABAP?	DATA(lv_result) = cl_abap_typedescr=>describe_by_data( ls_data )->get_relative_name( ).
+What is the REDUCE operator syntax?	DATA(lv_total) = REDUCE netwr( INIT sum = 0 FOR line IN lt_items NEXT sum = sum + line-netwr ).
+What is the FILTER operator syntax?	DATA(lt_high_value) = FILTER #( lt_items USING KEY primary_key WHERE netwr > 1000 ).
+How do you declare a local constant in modern ABAP?	CONSTANTS lc_max_items TYPE i VALUE 100.
+What prefix is used for local variables?	lv_ (e.g., lv_counter)
+What prefix is used for local structures?	ls_ (e.g., ls_order)
+What prefix is used for local internal tables?	lt_ (e.g., lt_orders)
+What prefix is used for local object references?	lo_ (e.g., lo_processor)
+What prefix is used for field symbols?	<fs_> (e.g., <fs_item>)
+What prefix is used for global variables?	gv_ (e.g., gv_max_items)
+How do you use SWITCH expression?	DATA(lv_text) = SWITCH #( lv_status WHEN 'A' THEN 'Active' WHEN 'I' THEN 'Inactive' ELSE 'Unknown' ).
+How do you use CONV for type conversion?	DATA(lv_string) = CONV string( lv_char ).
+How do you use REF to create a data reference?	DATA(lr_data) = REF #( ls_structure ).
+How do you check if a line exists in an internal table?	IF line_exists( lt_table[ field = value ] ).
+How do you read a single line from an internal table with table expression?	DATA(ls_line) = lt_table[ field = value ].
+How do you handle table expression exception for missing line?	TRY. DATA(ls_line) = lt_table[ field = value ]. CATCH cx_sy_itab_line_not_found. ENDTRY.
+What is the FOR expression syntax for table iteration?	VALUE #( FOR wa IN lt_source ( field1 = wa-field1 field2 = wa-field2 ) ).
+How do you use BASE to append to existing table content?	lt_result = VALUE #( BASE lt_result ( new_line ) ).
+How do you use LET expression for local bindings?	DATA(lv_result) = LET x = 5 y = 10 IN x + y.

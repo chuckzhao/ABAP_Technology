@@ -1,0 +1,36 @@
+# CDS Views - Anki Deck
+# Format: Front TAB Back
+# Import into Anki: File > Import, select "Tab" as separator
+
+What is the syntax to define a CDS entity view?	define view entity ZI_Customer as select from kna1 { key kunnr as CustomerId, name1 as CustomerName }
+What annotation controls authorization check in CDS?	@AccessControl.authorizationCheck: #NOT_REQUIRED
+What annotation sets the label for end users?	@EndUserText.label: 'Customer Basic View'
+What is the naming convention for CDS interface views?	ZI_ prefix (e.g., ZI_Customer)
+What is the naming convention for CDS consumption views?	ZC_ prefix (e.g., ZC_Customer)
+How do you define an association in CDS?	association [0..1] to ZI_Customer as _Customer on $projection.CustomerId = _Customer.CustomerId
+What does association cardinality [0..1] mean?	Zero or one related record
+What does association cardinality [0..*] mean?	Zero or more related records
+What does association cardinality [1] mean?	Exactly one related record
+How do you expose an association in a CDS view?	List it in the field list: _Customer
+How do you use a path expression to access associated data?	_Customer.CustomerName
+How do you define parameters in a CDS view?	with parameters p_from_date : vbak.erdat, p_to_date : vbak.erdat
+How do you use a parameter in CDS WHERE clause?	where erdat between :p_from_date and :p_to_date
+How do you write a CASE statement in CDS?	case vbak.vbtyp when 'C' then 'Order' when 'G' then 'Contract' else 'Other' end as DocumentType
+How do you cast a field in CDS?	cast(netwr as abap.dec(15,2)) * 1.19 as GrossAmount
+What annotation marks a CDS view as analytical cube?	@Analytics.dataCategory: #CUBE
+What annotation marks a field as dimension in analytics?	@Analytics.dimension: true
+What annotation sets default aggregation?	@DefaultAggregation: #SUM
+What annotation links amount to currency?	@Semantics.amount.currencyCode: 'Currency'
+What annotation marks a field as currency code?	@Semantics.currencyCode: true
+What annotation links quantity to unit?	@Semantics.quantity.unitOfMeasure: 'Unit'
+What annotation marks a field as unit of measure?	@Semantics.unitOfMeasure: true
+What annotation marks created by user?	@Semantics.user.createdBy: true
+What annotation marks creation timestamp?	@Semantics.systemDateTime.createdAt: true
+What annotation marks last changed by user?	@Semantics.user.lastChangedBy: true
+What annotation marks last changed timestamp?	@Semantics.systemDateTime.lastChangedAt: true
+How do you define a consumption view as projection?	define view entity ZC_Travel as projection on ZI_Travel
+What annotation allows metadata extensions?	@Metadata.allowExtensions: true
+What annotation enables search functionality?	@Search.searchable: true
+What annotation marks a field as default search element?	@Search.defaultSearchElement: true
+What is the difference between 'define view' and 'define view entity'?	'define view' creates DDIC view (deprecated), 'define view entity' is modern approach without DDIC layer
+What annotation was required for DDIC-based views (now deprecated)?	@AbapCatalog.sqlViewName: 'ZVIEW_NAME'
