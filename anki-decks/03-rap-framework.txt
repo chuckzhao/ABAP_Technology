@@ -1,0 +1,36 @@
+# RAP Framework - Anki Deck
+# Format: Front TAB Back
+# Import into Anki: File > Import, select "Tab" as separator
+
+What does RAP stand for?	ABAP RESTful Application Programming Model
+What is the syntax for managed RAP behavior definition?	managed implementation in class zbp_i_travel unique;
+What keyword defines the persistent table in behavior definition?	persistent table ztravel_xxx
+What keyword defines the draft table?	draft table ztravel_xxx_d
+How do you define lock handling in behavior?	lock master total etag LastChangedAt
+How do you enable standard CRUD operations?	create; update; delete;
+How do you mark fields as readonly?	field ( readonly ) TravelId, CreatedBy, CreatedAt;
+How do you mark fields as mandatory?	field ( mandatory ) AgencyId, CustomerId;
+How do you define a validation?	validation validateCustomer on save { field CustomerId; create; }
+How do you define a determination?	determination calculateTotalPrice on modify { field BookingFee; }
+How do you define an action in behavior?	action acceptTravel result [1] $self;
+What are the draft actions in RAP?	draft action Edit; draft action Activate; draft action Discard; draft action Resume; draft determine action Prepare;
+How do you define field mapping in behavior?	mapping for ztable { FieldName = db_field; }
+What is %tky in RAP?	Transactional key - unique identifier for entity instance
+What is %cid in RAP?	Content ID - used for create operations
+What is %msg in RAP?	Message handling structure
+What is %element in RAP?	Field-level message assignment
+What is %control in RAP?	Field change tracking structure
+What is %param in RAP?	Action parameter passing
+How do you read entities in RAP behavior implementation?	READ ENTITIES OF zi_travel IN LOCAL MODE ENTITY Travel FIELDS ( CustomerId ) WITH CORRESPONDING #( keys ) RESULT DATA(lt_travels).
+How do you modify entities in RAP?	MODIFY ENTITIES OF zi_travel IN LOCAL MODE ENTITY Travel UPDATE FIELDS ( Status ) WITH VALUE #( ( %tky = key-%tky Status = 'A' ) ).
+How do you create entities in RAP?	MODIFY ENTITIES OF zi_travel IN LOCAL MODE ENTITY Travel CREATE FIELDS ( ... ) WITH VALUE #( ( %cid = 'CID_001' ... ) ) MAPPED DATA(ls_mapped).
+How do you report errors in validation?	APPEND VALUE #( %tky = ls_travel-%tky ) TO failed-travel. APPEND VALUE #( %tky = ls_travel-%tky %msg = new_message_with_text( ... ) ) TO reported-travel.
+What is the difference between managed and unmanaged RAP?	Managed: framework handles DB operations. Unmanaged: developer controls all DB operations.
+What is the provider contract for transactional query?	provider contract transactional_query
+How do you define a service definition?	define service Z_UI_TRAVEL { expose ZC_Travel as Travel; }
+What binding type is used for Fiori UI?	OData V2 - UI or OData V4 - UI
+How do you define root view entity for composition?	define root view entity ZC_Travel
+What class do behavior implementations inherit from?	cl_abap_behavior_handler
+How do you define validation method signature?	METHODS validateCustomer FOR VALIDATE ON SAVE IMPORTING keys FOR Travel~validateCustomer.
+How do you define determination method signature?	METHODS calculateTotal FOR DETERMINE ON MODIFY IMPORTING keys FOR Travel~calculateTotalPrice.
+How do you define action method signature?	METHODS acceptTravel FOR MODIFY IMPORTING keys FOR ACTION Travel~acceptTravel RESULT result.

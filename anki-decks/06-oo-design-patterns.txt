@@ -1,0 +1,29 @@
+# OO Design Patterns - Anki Deck
+# Format: Front TAB Back
+# Import into Anki: File > Import, select "Tab" as separator
+
+What is the Singleton pattern?	Ensures only one instance of a class exists throughout the application
+How do you implement Singleton in ABAP?	CLASS zcl_singleton DEFINITION CREATE PRIVATE. CLASS-DATA: go_instance TYPE REF TO zcl_singleton. CLASS-METHODS: get_instance RETURNING VALUE(ro) TYPE REF TO zcl_singleton.
+What is the Factory pattern?	Creates objects without specifying their exact class - uses interface return type
+How do you implement Factory in ABAP?	CLASS-METHODS create_processor IMPORTING iv_type TYPE string RETURNING VALUE(ro) TYPE REF TO zif_processor. CASE iv_type. WHEN 'A'. ro = NEW zcl_type_a( ). ENDCASE.
+What is the Strategy pattern?	Defines family of algorithms, encapsulates each one, makes them interchangeable
+How is Strategy pattern implemented?	Interface defines algorithm. Multiple classes implement it. Context class receives strategy via constructor.
+What is the Observer pattern?	Defines one-to-many dependency - when one object changes, dependents are notified
+How do you implement Observer in ABAP?	Subject has mt_observers table, attach/detach methods, and notify method that loops through observers calling their update method.
+What is the Decorator pattern?	Attaches additional responsibilities to object dynamically - alternative to subclassing
+What is an abstract class in ABAP?	CLASS zcl_abstract DEFINITION ABSTRACT. Cannot be instantiated directly, may contain abstract methods.
+How do you define an abstract method?	METHODS process ABSTRACT IMPORTING iv_data TYPE string.
+How do you override a method in subclass?	METHODS process REDEFINITION.
+What is a friend class?	A class that can access protected/private members of another class: FRIENDS zcl_friend_class.
+How do you define an event in ABAP?	EVENTS data_processed EXPORTING VALUE(ev_count) TYPE i.
+How do you raise an event?	RAISE EVENT data_processed EXPORTING ev_count = lv_count.
+How do you handle an event?	METHODS on_processed FOR EVENT data_processed OF zcl_publisher IMPORTING ev_count.
+How do you register an event handler?	SET HANDLER me->on_processed FOR io_publisher.
+What is the Single Responsibility Principle (S in SOLID)?	A class should have only one reason to change - one responsibility
+What is the Open/Closed Principle (O in SOLID)?	Open for extension, closed for modification - use inheritance/interfaces
+What is the Liskov Substitution Principle (L in SOLID)?	Derived classes must be substitutable for their base classes
+What is the Interface Segregation Principle (I in SOLID)?	Don't force classes to implement methods they don't use - split interfaces
+What is the Dependency Inversion Principle (D in SOLID)?	Depend on abstractions (interfaces), not concretions (concrete classes)
+How do you implement interface in ABAP?	INTERFACES zif_processor. Then implement: METHOD zif_processor~process.
+What is constructor injection?	Pass dependencies via constructor: METHODS constructor IMPORTING io_repository TYPE REF TO zif_repository.
+What makes code testable?	Dependency injection, small focused methods, interfaces for external dependencies

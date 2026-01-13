@@ -1,0 +1,25 @@
+# HANA Optimization - Anki Deck
+# Format: Front TAB Back
+# Import into Anki: File > Import, select "Tab" as separator
+
+What is the code-to-data paradigm?	Push processing to the database instead of fetching all data to application server
+What is wrong with SELECT * FROM table INTO TABLE itab followed by LOOP with calculations?	Data-to-code approach - inefficient. Should use aggregations in SELECT.
+How do you calculate SUM in database instead of ABAP loop?	SELECT SUM( netwr ) FROM vbak INTO @DATA(lv_total).
+Why should you avoid SELECT in loops?	Each iteration causes database roundtrip - very poor performance
+What is the FOR ALL ENTRIES syntax?	SELECT * FROM kna1 FOR ALL ENTRIES IN @lt_customers WHERE kunnr = @lt_customers-kunnr INTO TABLE @DATA(lt_kna1).
+What should you check before using FOR ALL ENTRIES?	Check if the driver table is not empty (IF lt_driver IS NOT INITIAL)
+What does AMDP stand for?	ABAP Managed Database Procedure
+What interface must AMDP class implement?	if_amdp_marker_hdb
+How do you declare an AMDP method?	METHOD get_data BY DATABASE PROCEDURE FOR HDB LANGUAGE SQLSCRIPT OPTIONS READ-ONLY USING table1 table2.
+What language is used inside AMDP methods?	SQLScript
+How do you use aggregations in SELECT?	SELECT kunnr, COUNT(*) AS order_count, SUM(netwr) AS total_amount, AVG(netwr) AS avg_amount FROM vbak GROUP BY kunnr INTO TABLE @DATA(lt_summary).
+How do you use CASE in SELECT statement?	SELECT vbeln, CASE vbtyp WHEN 'C' THEN 'Order' WHEN 'G' THEN 'Contract' ELSE 'Other' END AS doc_type FROM vbak INTO TABLE @DATA(lt_orders).
+What is the syntax for INNER JOIN in Open SQL?	SELECT h~vbeln, k~name1 FROM vbak AS h INNER JOIN kna1 AS k ON h~kunnr = k~kunnr INTO TABLE @DATA(lt_result).
+What transaction is used for runtime analysis?	SAT (or SE30 in older systems)
+What transaction is used for SQL trace?	ST05
+What is the HAVING clause used for?	Filter aggregated results: GROUP BY kunnr HAVING SUM(netwr) > 1000
+How do you limit result rows in SELECT?	UP TO 100 ROWS
+How do you use ORDER BY in SELECT?	SELECT ... FROM ... ORDER BY field1 DESCENDING, field2 INTO TABLE @DATA(lt_result).
+What is the benefit of using CDS views over multiple SELECTs?	Associations are resolved efficiently in database, single query instead of multiple
+How do you create intermediate tables in AMDP?	lt_temp = SELECT ... FROM table; Then use :lt_temp in subsequent queries
+What OPTIONS can be set for AMDP?	READ-ONLY (for read operations), or omit for write operations
