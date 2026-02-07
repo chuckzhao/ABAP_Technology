@@ -104,46 +104,7 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 
 **OData Rules:**
 
-1. **All system query options start with `# OData Services & SAP Fiori Development Guide
-
-A comprehensive reference for understanding OData services and SAP Fiori application development.
-
----
-
-## Table of Contents
-
-1. [What is OData?](#what-is-odata)
-2. [URL Query vs OData Query](#url-query-vs-odata-query)
-3. [OData URL Structure](#odata-url-structure)
-4. [OData Service Components](#odata-service-components)
-5. [OData Versions (V2 vs V4)](#odata-versions-v2-vs-v4)
-6. [OData Query Operations](#odata-query-operations)
-7. [SAP Fiori Generated Files](#sap-fiori-generated-files)
-8. [Key Configuration Files](#key-configuration-files)
-9. [SAP Development Ecosystem](#sap-development-ecosystem)
-10. [Common OData Services](#common-odata-services)
-11. [Deep Dive: How Apps Are Actually Generated](#11-deep-dive-how-apps-are-actually-generated)
-12. [Troubleshooting Guide](#troubleshooting-guide)
-
----
-
-## What is OData?
-
-**OData (Open Data Protocol)** is an ISO/IEC approved, OASIS standard that defines best practices for building and consuming RESTful APIs.
-
-### Key Characteristics:
-
-- **REST-based protocol** - Uses standard HTTP methods (GET, POST, PUT, PATCH, DELETE)
-- **Standardized queries** - Consistent query syntax across all OData services
-- **Self-describing** - Services expose metadata describing their structure
-- **Platform-agnostic** - Works with any platform that supports HTTP
-
-### Why SAP Uses OData:
-
-- **SAP Gateway** - SAP's framework for exposing backend data as OData services
-- **SAP Fiori** - All SAP Fiori apps consume OData services
-- **S/4HANA** - Modern SAP systems expose business data via OData
-**
+1. **All system query options start with `$`**
 2. **Standardized names** - `$filter`, `$select`, `$top` mean the same on ALL OData services
 3. **Defined behavior** - The OData spec defines exactly what each option does
 4. **Standard operators** - `eq`, `gt`, `lt`, `and`, `or` work the same everywhere
@@ -185,46 +146,7 @@ https://any-odata-service.com/Products?$orderby=UnitPrice asc
 | Aspect | Generic URL Query | OData Query |
 |--------|------------------|-------------|
 | **Standard** | No standard | ISO/IEC standard |
-| **Prefix** | Any name | Must start with `# OData Services & SAP Fiori Development Guide
-
-A comprehensive reference for understanding OData services and SAP Fiori application development.
-
----
-
-## Table of Contents
-
-1. [What is OData?](#what-is-odata)
-2. [URL Query vs OData Query](#url-query-vs-odata-query)
-3. [OData URL Structure](#odata-url-structure)
-4. [OData Service Components](#odata-service-components)
-5. [OData Versions (V2 vs V4)](#odata-versions-v2-vs-v4)
-6. [OData Query Operations](#odata-query-operations)
-7. [SAP Fiori Generated Files](#sap-fiori-generated-files)
-8. [Key Configuration Files](#key-configuration-files)
-9. [SAP Development Ecosystem](#sap-development-ecosystem)
-10. [Common OData Services](#common-odata-services)
-11. [Deep Dive: How Apps Are Actually Generated](#11-deep-dive-how-apps-are-actually-generated)
-12. [Troubleshooting Guide](#troubleshooting-guide)
-
----
-
-## What is OData?
-
-**OData (Open Data Protocol)** is an ISO/IEC approved, OASIS standard that defines best practices for building and consuming RESTful APIs.
-
-### Key Characteristics:
-
-- **REST-based protocol** - Uses standard HTTP methods (GET, POST, PUT, PATCH, DELETE)
-- **Standardized queries** - Consistent query syntax across all OData services
-- **Self-describing** - Services expose metadata describing their structure
-- **Platform-agnostic** - Works with any platform that supports HTTP
-
-### Why SAP Uses OData:
-
-- **SAP Gateway** - SAP's framework for exposing backend data as OData services
-- **SAP Fiori** - All SAP Fiori apps consume OData services
-- **S/4HANA** - Modern SAP systems expose business data via OData
- |
+| **Prefix** | Any name | Must start with `$` |
 | **Consistency** | Each site is different | Same across all OData services |
 | **Examples** | `?search=`, `?q=`, `?query=` | `?$filter=` (always) |
 | **Operators** | Site-specific | Standard (`eq`, `gt`, `lt`, etc.) |
@@ -247,46 +169,7 @@ These are the **standardized** OData query options that work on ALL OData servic
 | `$format` | Response format | `?$format=json` |
 | `$search` | Full-text search | `?$search=laptop` |
 
-**Notice:** They ALL start with `# OData Services & SAP Fiori Development Guide
-
-A comprehensive reference for understanding OData services and SAP Fiori application development.
-
----
-
-## Table of Contents
-
-1. [What is OData?](#what-is-odata)
-2. [URL Query vs OData Query](#url-query-vs-odata-query)
-3. [OData URL Structure](#odata-url-structure)
-4. [OData Service Components](#odata-service-components)
-5. [OData Versions (V2 vs V4)](#odata-versions-v2-vs-v4)
-6. [OData Query Operations](#odata-query-operations)
-7. [SAP Fiori Generated Files](#sap-fiori-generated-files)
-8. [Key Configuration Files](#key-configuration-files)
-9. [SAP Development Ecosystem](#sap-development-ecosystem)
-10. [Common OData Services](#common-odata-services)
-11. [Deep Dive: How Apps Are Actually Generated](#11-deep-dive-how-apps-are-actually-generated)
-12. [Troubleshooting Guide](#troubleshooting-guide)
-
----
-
-## What is OData?
-
-**OData (Open Data Protocol)** is an ISO/IEC approved, OASIS standard that defines best practices for building and consuming RESTful APIs.
-
-### Key Characteristics:
-
-- **REST-based protocol** - Uses standard HTTP methods (GET, POST, PUT, PATCH, DELETE)
-- **Standardized queries** - Consistent query syntax across all OData services
-- **Self-describing** - Services expose metadata describing their structure
-- **Platform-agnostic** - Works with any platform that supports HTTP
-
-### Why SAP Uses OData:
-
-- **SAP Gateway** - SAP's framework for exposing backend data as OData services
-- **SAP Fiori** - All SAP Fiori apps consume OData services
-- **S/4HANA** - Modern SAP systems expose business data via OData
-
+**Notice:** They ALL start with `$`!
 
 ### Real-World Examples
 
@@ -401,46 +284,7 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 
 **OData Query Options:**
 - Specialized, standardized subset of URL queries
-- Always start with `# OData Services & SAP Fiori Development Guide
-
-A comprehensive reference for understanding OData services and SAP Fiori application development.
-
----
-
-## Table of Contents
-
-1. [What is OData?](#what-is-odata)
-2. [URL Query vs OData Query](#url-query-vs-odata-query)
-3. [OData URL Structure](#odata-url-structure)
-4. [OData Service Components](#odata-service-components)
-5. [OData Versions (V2 vs V4)](#odata-versions-v2-vs-v4)
-6. [OData Query Operations](#odata-query-operations)
-7. [SAP Fiori Generated Files](#sap-fiori-generated-files)
-8. [Key Configuration Files](#key-configuration-files)
-9. [SAP Development Ecosystem](#sap-development-ecosystem)
-10. [Common OData Services](#common-odata-services)
-11. [Deep Dive: How Apps Are Actually Generated](#11-deep-dive-how-apps-are-actually-generated)
-12. [Troubleshooting Guide](#troubleshooting-guide)
-
----
-
-## What is OData?
-
-**OData (Open Data Protocol)** is an ISO/IEC approved, OASIS standard that defines best practices for building and consuming RESTful APIs.
-
-### Key Characteristics:
-
-- **REST-based protocol** - Uses standard HTTP methods (GET, POST, PUT, PATCH, DELETE)
-- **Standardized queries** - Consistent query syntax across all OData services
-- **Self-describing** - Services expose metadata describing their structure
-- **Platform-agnostic** - Works with any platform that supports HTTP
-
-### Why SAP Uses OData:
-
-- **SAP Gateway** - SAP's framework for exposing backend data as OData services
-- **SAP Fiori** - All SAP Fiori apps consume OData services
-- **S/4HANA** - Modern SAP systems expose business data via OData
- (e.g., `$filter`, `$top`)
+- Always start with `$` (e.g., `$filter`, `$top`)
 - Same syntax on ALL OData services
 - Defined by OData specification
 - Used specifically for OData services
@@ -1685,17 +1529,23 @@ GET /Products?$filter=UnitPrice gt 20&$orderby=ProductName&$top=10&$select=Produ
 
 ## 11. Deep Dive: How Apps Are Actually Generated
 
-Deep Dive: How Apps Are Actually Generated
-Excellent question! You've identified a crucial misconception. Let me explain the deep technical layer of what's really happening.
 
-The Critical Distinction
-VS Code: Generates APP STRUCTURE (Not UI)
-ADT: Doesn't Generate an App (Previews with Fiori Elements)
+## The Critical Distinction
+
+### VS Code: Generates APP STRUCTURE (Not UI)
+### ADT: Doesn't Generate an App (Previews with Fiori Elements)
+
 Let me break this down completely.
 
-Part 1: What VS Code ACTUALLY Does
-Step-by-Step Generation Process
-When you run the Fiori generator in VS Code:
+---
+
+## Part 1: What VS Code ACTUALLY Does
+
+### Step-by-Step Generation Process
+
+**When you run the Fiori generator in VS Code:**
+
+```
 Step 1: Read OData $metadata
 ────────────────────────────
 Generator connects to: 
@@ -1755,26 +1605,32 @@ Step 4: DONE - No UI Generated!
 ────────────────────────────────
 Files created: ✅
 UI created: ❌ NOT YET!
-What VS Code Does NOT Do:
-❌ Does NOT generate:
+```
 
-Table columns
-Field labels
-Filters
-Actions
-Page layouts
+### What VS Code Does NOT Do:
 
-✅ Only generates:
+**❌ Does NOT generate:**
+- Table columns
+- Field labels
+- Filters
+- Actions
+- Page layouts
 
-File structure
-Configuration pointing to OData service
-Routing setup
-Template references
+**✅ Only generates:**
+- File structure
+- Configuration pointing to OData service
+- Routing setup
+- Template references
 
+---
 
-Part 2: How the UI Actually Gets Created (Runtime)
-The Runtime Magic: Fiori Elements Framework
-When you run npm start and open the app in browser:
+## Part 2: How the UI Actually Gets Created (Runtime)
+
+### The Runtime Magic: Fiori Elements Framework
+
+**When you run `npm start` and open the app in browser:**
+
+```
 Browser Loading Process
 ═══════════════════════
 
@@ -1849,7 +1705,11 @@ Browser displays:
 
 This table was NEVER in any file!
 It was created at runtime from annotations!
-The Key Insight:
+```
+
+### The Key Insight:
+
+```
 VS Code Generated Files        Runtime Process
 ────────────────────────       ───────────────
 
@@ -1859,12 +1719,20 @@ Component.js           →       Initializes the app
 (No column list)       →       Finds UI annotations
 (No field labels)      →       CREATES UI in memory
                       →       Renders to browser
-The UI is NOT in the generated files!
-The UI is CREATED at runtime from annotations!
+```
 
-Part 3: What ADT ACTUALLY Does
-ADT Service Binding Preview
-When you click "Preview" in ADT Service Binding:
+**The UI is NOT in the generated files!**
+**The UI is CREATED at runtime from annotations!**
+
+---
+
+## Part 3: What ADT ACTUALLY Does
+
+### ADT Service Binding Preview
+
+**When you click "Preview" in ADT Service Binding:**
+
+```
 Step 1: ADT Reads Your CDS Annotations
 ───────────────────────────────────────
 You wrote:
@@ -1911,23 +1779,28 @@ The preview app:
 
 Same as VS Code app at runtime!
 Just using SAP's preview app instead of your generated app.
-What ADT Does NOT Do:
-❌ Does NOT create:
+```
 
-manifest.json
-Component.js
-Deployable Fiori app
-Frontend project files
+### What ADT Does NOT Do:
 
-✅ Only does:
+**❌ Does NOT create:**
+- manifest.json
+- Component.js
+- Deployable Fiori app
+- Frontend project files
 
-Launches preview using SAP's built-in Fiori Elements
-Shows you how UI will look
-Temporary preview (not a real app)
+**✅ Only does:**
+- Launches preview using SAP's built-in Fiori Elements
+- Shows you how UI will look
+- Temporary preview (not a real app)
 
+---
 
-Part 4: Deep Technical Comparison
-VS Code Process (Detailed)
+## Part 4: Deep Technical Comparison
+
+### VS Code Process (Detailed)
+
+```
 ┌─────────────────────────────────────────────────────────────┐
 │ DESIGN TIME (VS Code - yo @sap/fiori)                       │
 ├─────────────────────────────────────────────────────────────┤
@@ -1989,7 +1862,11 @@ VS Code Process (Detailed)
 │    Browser displays the UI                                  │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
-ADT Process (Detailed)
+```
+
+### ADT Process (Detailed)
+
+```
 ┌─────────────────────────────────────────────────────────────┐
 │ DESIGN TIME (ADT - Eclipse)                                 │
 ├─────────────────────────────────────────────────────────────┤
@@ -2050,11 +1927,18 @@ ADT Process (Detailed)
 │ NO files created on filesystem                              │
 │                                                              │
 └─────────────────────────────────────────────────────────────┘
+```
 
-Part 5: The Actual Code Generation Deep Dive
-What Files Are Actually Generated?
-VS Code Generator Source Code (Conceptual):
-javascript// This is what the Fiori generator actually does
+---
+
+## Part 5: The Actual Code Generation Deep Dive
+
+### What Files Are Actually Generated?
+
+**VS Code Generator Source Code (Conceptual):**
+
+```javascript
+// This is what the Fiori generator actually does
 
 class FioriGenerator {
   
@@ -2099,8 +1983,12 @@ class FioriGenerator {
     // NO FORM GENERATION
   }
 }
-What About the UI?
-javascript// This happens at RUNTIME in the browser
+```
+
+**What About the UI?**
+
+```javascript
+// This happens at RUNTIME in the browser
 // Inside Fiori Elements framework
 
 class ListReportTemplate {
@@ -2149,6 +2037,7 @@ class ListReportTemplate {
 ## Part 6: The Complete Truth
 
 ### Generation vs Interpretation
+
 ```
 ┌─────────────────────────────────────────────────────────────┐
 │                    THE ACTUAL TRUTH                          │
@@ -2224,6 +2113,7 @@ class ListReportTemplate {
 5. **Browser renders** → User sees preview
 
 ### The Key Insight:
+
 ```
 Neither generates a "complete app"!
 
@@ -2237,9 +2127,12 @@ ADT:
   
 The REAL magic: Fiori Elements framework
   Reads annotations → Creates UI → No hard-coded UI needed!
-This is why Fiori Elements is so powerful:
+```
 
-Change annotation → UI changes automatically
-No UI code to maintain
-Works with any properly annotated service
-Same framework in preview AND production
+**This is why Fiori Elements is so powerful:**
+- Change annotation → UI changes automatically
+- No UI code to maintain
+- Works with any properly annotated service
+- Same framework in preview AND production
+
+Does this explain the deep technical layer you were asking about?
