@@ -1,6 +1,7 @@
 # OData Services & SAP Fiori Development Guide
 
-A comprehensive reference for understanding OData services and SAP Fiori application development.
+A comprehensive reference for understanding OData services
+and SAP Fiori application development.
 
 ---
 
@@ -10,28 +11,30 @@ A comprehensive reference for understanding OData services and SAP Fiori applica
 2. [URL Query vs OData Query](#url-query-vs-odata-query)
 3. [OData URL Structure](#odata-url-structure)
 4. [OData Service Components](#odata-service-components)
-4. [OData Versions (V2 vs V4)](#odata-versions-v2-vs-v4)
-5. [OData Query Operations](#odata-query-operations)
-6. [SAP Fiori Generated Files](#sap-fiori-generated-files)
-7. [Key Configuration Files](#key-configuration-files)
-8. [SAP Development Ecosystem](#sap-development-ecosystem)
-9. [Common OData Services](#common-odata-services)
-10. [Troubleshooting Guide](#troubleshooting-guide)
+5. [OData Versions (V2 vs V4)](#odata-versions-v2-vs-v4)
+6. [OData Query Operations](#odata-query-operations)
+7. [SAP Fiori Generated Files](#sap-fiori-generated-files)
+8. [Key Configuration Files](#key-configuration-files)
+9. [SAP Development Ecosystem](#sap-development-ecosystem)
+10. [Common OData Services](#common-odata-services)
+11. [Troubleshooting Guide](#troubleshooting-guide)
 
 ---
 
 ## What is OData?
 
-**OData (Open Data Protocol)** is an ISO/IEC approved, OASIS standard that defines best practices for building and consuming RESTful APIs.
+**OData (Open Data Protocol)** is an ISO/IEC approved,
+OASIS standard that defines best practices for building
+and consuming RESTful APIs.
 
-### Key Characteristics:
+### Key Characteristics
 
 - **REST-based protocol** - Uses standard HTTP methods (GET, POST, PUT, PATCH, DELETE)
 - **Standardized queries** - Consistent query syntax across all OData services
 - **Self-describing** - Services expose metadata describing their structure
 - **Platform-agnostic** - Works with any platform that supports HTTP
 
-### Why SAP Uses OData:
+### Why SAP Uses OData
 
 - **SAP Gateway** - SAP's framework for exposing backend data as OData services
 - **SAP Fiori** - All SAP Fiori apps consume OData services
@@ -42,14 +45,18 @@ A comprehensive reference for understanding OData services and SAP Fiori applica
 
 ## URL Query vs OData Query
 
-Understanding the difference between generic URL queries and OData queries is fundamental to working with OData services.
+Understanding the difference between generic URL queries
+and OData queries is fundamental to working with OData
+services.
 
 ### URL Query Parameters (Generic)
 
-**URL query parameters** are the general mechanism for passing data in any HTTP URL.
+**URL query parameters** are the general mechanism for
+passing data in any HTTP URL.
 
 **Basic Structure:**
-```
+
+```text
 https://example.com/page?param1=value1&param2=value2&param3=value3
                         │    └── parameter name & value
                         └── Question mark starts query string
@@ -58,7 +65,8 @@ https://example.com/page?param1=value1&param2=value2&param3=value3
 **Examples:**
 
 **1. Google Search:**
-```
+
+```text
 https://www.google.com/search?q=SAP+Fiori&hl=en&num=10
                               │  │        │   │   └── number of results
                               │  │        │   └── language (English)
@@ -68,7 +76,8 @@ https://www.google.com/search?q=SAP+Fiori&hl=en&num=10
 ```
 
 **2. YouTube:**
-```
+
+```text
 https://www.youtube.com/watch?v=abc123&t=30s&autoplay=1
                               │ └──┬──┘ └─┬─┘ └────┬────┘
                               │    │      │        └── autoplay parameter
@@ -78,11 +87,13 @@ https://www.youtube.com/watch?v=abc123&t=30s&autoplay=1
 ```
 
 **3. E-commerce Site:**
-```
+
+```text
 https://shop.com/products?category=laptops&price_min=500&price_max=2000&sort=price_asc
 ```
 
 **Key Points:**
+
 - **Generic** - Works on any website
 - **No standard** - Each site defines its own parameters
 - **Arbitrary names** - `q`, `search`, `query` all mean search on different sites
@@ -90,10 +101,13 @@ https://shop.com/products?category=laptops&price_min=500&price_max=2000&sort=pri
 
 ### OData Query Options (Standardized)
 
-**OData query options** are a **standardized subset** of URL query parameters with specific meanings defined by the OData protocol.
+**OData query options** are a **standardized subset** of
+URL query parameters with specific meanings defined by
+the OData protocol.
 
 **Basic Structure:**
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice gt 20&$top=10
                                                                │ └─────┬──────────┘ └───┬───┘
                                                                │       │                 └── OData system query option
@@ -104,46 +118,53 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 **OData Rules:**
 
 1. **All system query options start with `$`**
-2. **Standardized names** - `$filter`, `$select`, `$top` mean the same on ALL OData services
+2. **Standardized names** - `$filter`, `$select`, `$top`
+   mean the same on ALL OData services
 3. **Defined behavior** - The OData spec defines exactly what each option does
 4. **Standard operators** - `eq`, `gt`, `lt`, `and`, `or` work the same everywhere
 
 ### Side-by-Side Comparison
 
-**Example: Get Products Under $50**
+#### Example: Get Products Under $50
 
 **Generic URL Query (Non-OData Site):**
-```
+
+```text
 https://shop.com/api/products?max_price=50
                              └── Custom parameter name (site-specific)
 ```
 
 **OData Query:**
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice lt 50
                                                                └── Standardized OData syntax
 ```
 
-**Example: Sort Results**
+#### Example: Sort Results
 
 **Generic URL Query:**
-```
+
+```text
 https://site1.com/items?sort=price_asc
 https://site2.com/goods?orderby=cost&direction=ascending
 https://site3.com/stuff?sortBy=price&order=asc
 ```
+
 → Three different sites, three different ways to sort!
 
 **OData Query (Same on ALL OData services):**
-```
+
+```text
 https://any-odata-service.com/Products?$orderby=UnitPrice asc
 ```
+
 → Works the same way on every OData service!
 
 ### Complete Comparison Table
 
 | Aspect | Generic URL Query | OData Query |
-|--------|------------------|-------------|
+| -------- | ------------------ | ------------- |
 | **Standard** | No standard | ISO/IEC standard |
 | **Prefix** | Any name | Must start with `$` |
 | **Consistency** | Each site is different | Same across all OData services |
@@ -157,7 +178,7 @@ https://any-odata-service.com/Products?$orderby=UnitPrice asc
 These are the **standardized** OData query options that work on ALL OData services:
 
 | Option | Purpose | Example |
-|--------|---------|---------|
+| -------- | --------- | --------- |
 | `$filter` | Filter results | `?$filter=Price gt 100` |
 | `$select` | Choose fields | `?$select=Name,Price` |
 | `$orderby` | Sort results | `?$orderby=Name desc` |
@@ -170,12 +191,11 @@ These are the **standardized** OData query options that work on ALL OData servic
 
 **Notice:** They ALL start with `$`!
 
-
 ### Real-World Examples
 
-**1. Generic URL Query (Amazon-style)**
+#### 1. Generic URL Query (Amazon-style)
 
-```
+```text
 https://amazon.com/s?k=laptop&s=price-asc-rank&rh=n:565108,p_36:50000-100000
                      │ └─────┘ └──────────┘ └─────────────────────┘
                      │    │         │              └── price range (custom format)
@@ -185,14 +205,15 @@ https://amazon.com/s?k=laptop&s=price-asc-rank&rh=n:565108,p_36:50000-100000
 ```
 
 **Issues:**
+
 - `k` = keyword (not obvious)
 - `s` = sort (cryptic)
 - `rh` = refinements (what?)
 - Need Amazon's docs to understand
 
-**2. OData Query (Any OData Service)**
+#### 2. OData Query (Any OData Service)
 
-```
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice ge 50 and UnitPrice le 100&$orderby=ProductName asc
                                                                └─────────────────┬────────────────────────┘ └──────────────┬────────────┘
                                                                                  │                                          └── Sort (standard)
@@ -200,6 +221,7 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 ```
 
 **Advantages:**
+
 - `$filter` = obvious (filtering data)
 - `$orderby` = obvious (sorting)
 - `ge` and `le` = standard operators (greater-equal, less-equal)
@@ -210,17 +232,20 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 **Before OData (The Problem):**
 
 **Site A:**
-```
+
+```text
 /api/users?name_contains=John&age_greater_than=25&limit=10&offset=20
 ```
 
 **Site B:**
-```
+
+```text
 /api/users?filter=name:John&filter=age>25&max=10&skip=20
 ```
 
 **Site C:**
-```
+
+```text
 /api/users?q=name~John,age>25&take=10&page=3
 ```
 
@@ -229,7 +254,8 @@ All doing the same thing, but completely different!
 **After OData (The Solution):**
 
 **ALL OData Services:**
-```
+
+```text
 /Users?$filter=contains(Name,'John') and Age gt 25&$top=10&$skip=20
 ```
 
@@ -239,7 +265,7 @@ Same syntax everywhere!
 
 OData queries ARE URL queries, just with standardized conventions:
 
-```
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice gt 20&$top=10&lang=en
                                                                │ └─────────OData─────────┘ └──┬──┘
                                                                │                              └── Custom parameter (not OData)
@@ -247,6 +273,7 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 ```
 
 **In this URL:**
+
 - `?` = URL query string start (HTTP standard)
 - `$filter` and `$top` = OData system query options (OData standard)
 - `lang=en` = Custom parameter (could be anything)
@@ -256,11 +283,13 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 **For Developers:**
 
 **Generic URL Queries:**
+
 - ❌ Must read documentation for each API
 - ❌ Different syntax for each service
 - ❌ Custom code for each integration
 
 **OData Queries:**
+
 - ✅ Learn once, use everywhere
 - ✅ Same syntax across all OData services
 - ✅ Reusable code/libraries
@@ -269,6 +298,7 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 **For SAP Fiori:**
 
 **Why SAP chose OData:**
+
 - One OData model in SAPUI5 works with ANY OData service
 - Fiori Elements can automatically generate UIs from metadata
 - Consistent developer experience across all SAP services
@@ -277,12 +307,14 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 ### Summary: The Relationship
 
 **URL Query Parameters:**
+
 - Generic HTTP mechanism
 - `?parameter=value&another=value`
 - No standard - every site is different
 - Used by all websites
 
 **OData Query Options:**
+
 - Specialized, standardized subset of URL queries
 - Always start with `$` (e.g., `$filter`, `$top`)
 - Same syntax on ALL OData services
@@ -290,7 +322,8 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products?$filter=UnitPrice
 - Used specifically for OData services
 
 **The Hierarchy:**
-```
+
+```text
 URL Queries (Generic)
     │
     ├── Random website queries (no standard)
@@ -299,12 +332,15 @@ URL Queries (Generic)
 ```
 
 **Think of it this way:**
+
 - **URL queries** = The mechanism (the "how")
 - **OData queries** = A specific standard for using that mechanism (the "what")
 
 Just like:
+
 - **Cars** = The mechanism (transportation with wheels)
-- **Traffic rules** = A specific standard for using cars (drive on right, stop at red, etc.)
+- **Traffic rules** = A specific standard for using cars
+  (drive on right, stop at red, etc.)
 
 ---
 
@@ -312,7 +348,7 @@ Just like:
 
 ### Complete URL Anatomy
 
-```
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products('ALFKI')?$expand=Category&$top=10
 │      │                    │  │                 │   │        │         │                │
 │      │                    │  │                 │   │        │         │                └─ Query Option ($top)
@@ -328,36 +364,46 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products('ALFKI')?$expand=
 ### URL Components Explained
 
 #### 1. Service Root URL
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/
 ```
+
 - The base URL that identifies the OData service
 - Everything before the entity sets/operations
 
 #### 2. Entity Set
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products
 ```
+
 - Collection of entities (like a database table)
 - Examples: Products, Orders, Customers
 
 #### 3. Entity (Single Record)
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products('ALFKI')
 ```
+
 - Single entity identified by its key
 - Key can be string (in quotes) or number
 
 #### 4. Property
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products('ALFKI')/ProductName
 ```
+
 - Access a specific property of an entity
 
 #### 5. Navigation Property
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products('ALFKI')/Category
 ```
+
 - Follow relationships to related entities
 - Like SQL JOINs
 
@@ -368,13 +414,15 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products('ALFKI')/Category
 ### 1. Service Document
 
 **URL Pattern:**
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/
 ```
 
 **Purpose:** Lists all available entity sets
 
 **Example Response (XML):**
+
 ```xml
 <service xml:base="https://services.odata.org/V2/Northwind/Northwind.svc/">
   <workspace>
@@ -394,13 +442,15 @@ https://services.odata.org/V2/Northwind/Northwind.svc/
 ### 2. Metadata Document
 
 **URL Pattern:**
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/$metadata
 ```
 
 **Purpose:** Describes the complete data model
 
 **What It Contains:**
+
 - Entity types and their properties
 - Property data types
 - Relationships between entities
@@ -409,6 +459,7 @@ https://services.odata.org/V2/Northwind/Northwind.svc/$metadata
 - Service operations
 
 **Example Metadata Snippet:**
+
 ```xml
 <EntityType Name="Product">
   <Key>
@@ -429,13 +480,15 @@ https://services.odata.org/V2/Northwind/Northwind.svc/$metadata
 ### 3. Entity Sets
 
 **URL Pattern:**
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products
 ```
 
 **Purpose:** Collections of entities (like database tables)
 
 **Example Response (JSON):**
+
 ```json
 {
   "d": {
@@ -462,11 +515,13 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products
 ### 4. Entity (Single Record)
 
 **URL Pattern:**
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/Products(1)
 ```
 
 **Response:**
+
 ```json
 {
   "d": {
@@ -487,17 +542,20 @@ https://services.odata.org/V2/Northwind/Northwind.svc/Products(1)
 ### OData V2 (Released 2010)
 
 **Used By:**
+
 - SAP Gateway services
 - Classic CDS views
 - Most existing SAP Fiori apps
 - SAP S/4HANA on-premise systems
 
 **URL Pattern:**
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/
 ```
 
 **Characteristics:**
+
 - Simpler query syntax
 - `$batch` for batch operations
 - Wide SAP adoption
@@ -506,17 +564,20 @@ https://services.odata.org/V2/Northwind/Northwind.svc/
 ### OData V4 (Released 2014)
 
 **Used By:**
+
 - RAP (ABAP RESTful Application Programming)
 - Modern Fiori Elements apps
 - SAP S/4HANA Cloud
 - New SAP development
 
 **URL Pattern:**
-```
+
+```text
 https://services.odata.org/V4/TripPinServiceRW/
 ```
 
 **Characteristics:**
+
 - More powerful queries
 - Better performance
 - `$apply` for aggregations
@@ -526,7 +587,7 @@ https://services.odata.org/V4/TripPinServiceRW/
 ### Key Differences
 
 | Feature | V2 | V4 |
-|---------|----|----|
+| --------- | ---- | ---- |
 | **Query Capabilities** | Basic | Advanced |
 | **Batch Operations** | Complex structure | Simplified |
 | **Aggregations** | Limited | Built-in `$apply` |
@@ -545,17 +606,22 @@ All system query options start with `$` prefix.
 #### 1. $filter - Filter Results
 
 **Syntax:**
-```
+
+```text
 /Products?$filter=UnitPrice gt 20
 ```
 
 **Operators:**
-- **Comparison:** `eq` (equal), `ne` (not equal), `gt` (greater than), `lt` (less than), `ge` (>=), `le` (<=)
+
+- **Comparison:** `eq` (equal), `ne` (not equal),
+  `gt` (greater than), `lt` (less than),
+  `ge` (>=), `le` (<=)
 - **Logical:** `and`, `or`, `not`
 - **Functions:** `contains()`, `startswith()`, `endswith()`, `length()`, `substring()`
 
 **Examples:**
-```
+
+```text
 # Price greater than 20
 /Products?$filter=UnitPrice gt 20
 
@@ -572,7 +638,8 @@ All system query options start with `$` prefix.
 #### 2. $select - Choose Fields
 
 **Syntax:**
-```
+
+```text
 /Products?$select=ProductID,ProductName,UnitPrice
 ```
 
@@ -581,37 +648,43 @@ All system query options start with `$` prefix.
 #### 3. $expand - Include Related Data
 
 **Syntax:**
-```
+
+```text
 /Products?$expand=Category
 ```
 
 **Like SQL JOIN** - includes related entities in response
 
 **Example:**
-```
+
+```text
 /Products(1)?$expand=Category,Supplier
 ```
 
 #### 4. $orderby - Sort Results
 
 **Syntax:**
-```
+
+```text
 /Products?$orderby=UnitPrice desc
 ```
 
 **Options:**
+
 - `asc` - Ascending (default)
 - `desc` - Descending
 
 **Multiple fields:**
-```
+
+```text
 /Products?$orderby=Category,UnitPrice desc
 ```
 
 #### 5. $top - Limit Results
 
 **Syntax:**
-```
+
+```text
 /Products?$top=10
 ```
 
@@ -620,12 +693,14 @@ All system query options start with `$` prefix.
 #### 6. $skip - Skip Records
 
 **Syntax:**
-```
+
+```text
 /Products?$skip=20
 ```
 
 **Used for pagination:**
-```
+
+```text
 # Page 1 (records 1-10)
 /Products?$top=10&$skip=0
 
@@ -639,27 +714,30 @@ All system query options start with `$` prefix.
 #### 7. $count - Get Total Count
 
 **V2 Syntax:**
-```
+
+```text
 /Products/$count
 /Products?$inlinecount=allpages
 ```
 
 **V4 Syntax:**
-```
+
+```text
 /Products?$count=true
 ```
 
 #### 8. $format - Response Format
 
 **Syntax:**
-```
+
+```text
 /Products?$format=json
 /Products?$format=xml
 ```
 
 ### Combining Query Options
 
-```
+```text
 /Products?$filter=UnitPrice gt 20
          &$orderby=ProductName
          &$top=10
@@ -669,6 +747,7 @@ All system query options start with `$` prefix.
 ```
 
 **This query:**
+
 1. Filters products where price > 20
 2. Sorts by product name
 3. Takes only first 10 results
@@ -680,23 +759,27 @@ All system query options start with `$` prefix.
 
 ## VS Code vs ADT: How Apps Are Actually Generated
 
-Understanding how Fiori applications are actually generated is crucial. Many developers misunderstand what happens at design time versus runtime.
+Understanding how Fiori applications are actually
+generated is crucial. Many developers misunderstand
+what happens at design time versus runtime.
 
 ### The Fundamental Difference
 
-**VS Code Fiori Elements Template (Frontend)**
+#### VS Code Fiori Elements Template (Frontend)
+
 - **What:** Creates the **UI application structure** (presentation layer)
 - **Where:** Runs in the browser
 - **Developer:** Frontend/Fiori developer
 
-**ADT OData Annotations (Backend)**
+#### ADT OData Annotations (Backend)
+
 - **What:** Defines **metadata** that describes how UI should look
 - **Where:** Lives in the backend (SAP system)
 - **Developer:** ABAP/Backend developer
 
-### Key Insight: They Work Together!
+### Key Insight: They Work Together
 
-```
+```text
 Backend (ADT/Eclipse)           →    Frontend (VS Code)
 ─────────────────────────────        ──────────────────
 
@@ -711,6 +794,7 @@ Backend (ADT/Eclipse)           →    Frontend (VS Code)
 ```
 
 **Think of it like:**
+
 - **ADT Annotations** = The blueprint/instructions
 - **VS Code Fiori App** = The house built from the blueprint
 
@@ -720,7 +804,7 @@ Backend (ADT/Eclipse)           →    Frontend (VS Code)
 
 When you run the Fiori generator in VS Code:
 
-```
+```text
 Step 1: Read OData $metadata
 ────────────────────────────
 Generator connects to: 
@@ -785,6 +869,7 @@ UI created: ❌ NOT YET!
 **What VS Code Does NOT Do:**
 
 ❌ **Does NOT generate:**
+
 - Table columns
 - Field labels
 - Filters
@@ -792,6 +877,7 @@ UI created: ❌ NOT YET!
 - Page layouts
 
 ✅ **Only generates:**
+
 - File structure
 - Configuration pointing to OData service
 - Routing setup
@@ -799,11 +885,11 @@ UI created: ❌ NOT YET!
 
 ### How the UI Actually Gets Created (Runtime)
 
-**The Runtime Magic: Fiori Elements Framework**
+#### The Runtime Magic: Fiori Elements Framework
 
 When you run `npm start` and open the app in browser:
 
-```
+```xml
 Browser Loading Process
 ═══════════════════════
 
@@ -882,7 +968,7 @@ It was created at runtime from annotations!
 
 **The Key Insight:**
 
-```
+```text
 VS Code Generated Files        Runtime Process
 ────────────────────────       ───────────────
 
@@ -903,7 +989,7 @@ Component.js           →       Initializes the app
 
 When you click "Preview" in ADT Service Binding:
 
-```
+```xml
 Step 1: ADT Reads Your CDS Annotations
 ───────────────────────────────────────
 You wrote:
@@ -955,12 +1041,14 @@ Just using SAP's preview app instead of your generated app.
 **What ADT Does NOT Do:**
 
 ❌ **Does NOT create:**
+
 - manifest.json
 - Component.js
 - Deployable Fiori app
 - Frontend project files
 
 ✅ **Only does:**
+
 - Launches preview using SAP's built-in Fiori Elements
 - Shows you how UI will look
 - Temporary preview (not a real app)
@@ -969,7 +1057,7 @@ Just using SAP's preview app instead of your generated app.
 
 **VS Code Process (Detailed):**
 
-```
+```bash
 ┌─────────────────────────────────────────────────────────────┐
 │ DESIGN TIME (VS Code - yo @sap/fiori)                       │
 ├─────────────────────────────────────────────────────────────┤
@@ -1035,7 +1123,7 @@ Just using SAP's preview app instead of your generated app.
 
 **ADT Process (Detailed):**
 
-```
+```bash
 ┌─────────────────────────────────────────────────────────────┐
 │ DESIGN TIME (ADT - Eclipse)                                 │
 ├─────────────────────────────────────────────────────────────┤
@@ -1170,6 +1258,7 @@ Entity: Travel
 ```
 
 **Result:**
+
 - Table shows TravelID, Description, CustomerID, BeginDate, EndDate, TotalPrice
 - Clicking row shows detail page with all fields
 - CustomerID has value help
@@ -1181,16 +1270,19 @@ Entity: Travel
 **Use Backend Annotations (ADT) When:**
 
 ✅ **Building enterprise SAP apps**
+
 - Multiple Fiori apps will use the same service
 - Centralized UI definition
 - ABAP team controls the data model
 
 ✅ **RAP Development**
+
 - Building new S/4HANA apps
 - Modern ABAP development
 - Annotations are part of the service definition
 
 ✅ **Reusability**
+
 - Same annotations used by multiple apps
 - Consistency across applications
 - Single source of truth
@@ -1198,16 +1290,19 @@ Entity: Travel
 **Use Local Annotations (VS Code) When:**
 
 ✅ **Consuming external services**
+
 - Third-party OData services
 - Services you don't control
 - No access to backend
 
 ✅ **Rapid prototyping**
+
 - Quick demos
 - POC applications
 - Frontend-only development
 
 ✅ **Custom UI requirements**
+
 - Override backend annotations
 - App-specific UI needs
 - Different from other apps using same service
@@ -1215,7 +1310,7 @@ Entity: Travel
 ### Comparison Table
 
 | Aspect | Backend Annotations (ADT) | Fiori Elements Template (VS Code) |
-|--------|---------------------------|-----------------------------------|
+| -------- | --------------------------- | ----------------------------------- |
 | **What It Creates** | OData service with annotations | Frontend app structure |
 | **Location** | SAP backend system | Frontend app files |
 | **File Type** | ABAP CDS annotations | manifest.json, Component.js |
@@ -1227,7 +1322,7 @@ Entity: Travel
 
 ### The Complete Truth
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                    THE ACTUAL TRUTH                          │
 ├─────────────────────────────────────────────────────────────┤
@@ -1284,6 +1379,7 @@ Entity: Travel
 ### Summary
 
 **VS Code Process:**
+
 1. **Generator reads $metadata** → Gets entity structure
 2. **Generator creates FILES** → Configuration only, no UI
 3. **Runtime: Fiori Elements reads $metadata again** → Gets annotations
@@ -1291,6 +1387,7 @@ Entity: Travel
 5. **Browser renders** → User sees the app
 
 **ADT Process:**
+
 1. **Developer writes CDS with @UI annotations** → Source code
 2. **Service binding converts to OData** → Annotations in $metadata
 3. **Preview button** → Opens SAP's preview app (temporary)
@@ -1301,11 +1398,15 @@ Entity: Travel
 
 Neither generates a "complete app" with UI!
 
-- **VS Code:** Generates app skeleton (config files). UI created by Fiori Elements at runtime.
-- **ADT:** Generates OData service (with annotations). Preview uses temporary Fiori Elements preview.
-- **The REAL magic:** Fiori Elements framework reads annotations → creates UI → no hard-coded UI needed!
+- **VS Code:** Generates app skeleton (config files).
+  UI created by Fiori Elements at runtime.
+- **ADT:** Generates OData service (with annotations).
+  Preview uses temporary Fiori Elements preview.
+- **The REAL magic:** Fiori Elements framework reads
+  annotations, creates UI, no hard-coded UI needed!
 
 **This is why Fiori Elements is so powerful:**
+
 - Change annotation → UI changes automatically
 - No UI code to maintain
 - Works with any properly annotated service
@@ -1319,7 +1420,7 @@ When you generate a Fiori app, this is the complete file structure created:
 
 ### Project Root Structure
 
-```
+```text
 productsapp/
 ├── webapp/                    # Application source code
 │   ├── manifest.json          # App descriptor (CRITICAL)
@@ -1541,6 +1642,7 @@ sap.ui.define([
 ```
 
 **What It Does:**
+
 - Extends SAP Fiori Elements AppComponent
 - Loads manifest.json configuration
 - Initializes the application
@@ -1571,6 +1673,7 @@ sap.ui.define([
 ```
 
 **Common Commands:**
+
 - `npm start` - Start dev server
 - `npm run build` - Build for production
 - `npm run unit-tests` - Run unit tests
@@ -1601,6 +1704,7 @@ Discontinued=Discontinued
 ```
 
 **Additional Languages:**
+
 - `i18n_de.properties` - German
 - `i18n_es.properties` - Spanish
 - `i18n_fr.properties` - French
@@ -1712,7 +1816,7 @@ Discontinued=Discontinued
 
 ### Development Tools
 
-```
+```text
 ┌─────────────────────────────────────────────┐
 │           Development Tools                  │
 ├─────────────────────────────────────────────┤
@@ -1732,7 +1836,7 @@ Discontinued=Discontinued
 
 ### The Complete Flow
 
-```
+```text
 Backend (SAP System)          →    Frontend (Browser)
 ─────────────────────────────      ──────────────────
                                    
@@ -1754,7 +1858,7 @@ Backend (SAP System)          →    Frontend (Browser)
 
 ### Architecture Layers
 
-```
+```text
 ┌──────────────────────────────────────────────────┐
 │                  Presentation Layer               │
 │  ┌────────────┐  ┌────────────┐  ┌────────────┐ │
@@ -1797,16 +1901,19 @@ Backend (SAP System)          →    Frontend (Browser)
 #### 1. Northwind (Most Popular)
 
 **OData V2:**
-```
+
+```text
 https://services.odata.org/V2/Northwind/Northwind.svc/
 ```
 
 **OData V4:**
-```
+
+```text
 https://services.odata.org/V4/Northwind/Northwind.svc/
 ```
 
 **Entities:**
+
 - Products
 - Categories
 - Suppliers
@@ -1819,11 +1926,13 @@ https://services.odata.org/V4/Northwind/Northwind.svc/
 #### 2. TripPin
 
 **OData V4:**
-```
+
+```text
 https://services.odata.org/V4/TripPinServiceRW/
 ```
 
 **Entities:**
+
 - People
 - Trips
 - Airlines
@@ -1833,10 +1942,12 @@ https://services.odata.org/V4/TripPinServiceRW/
 
 ### SAP Services
 
-**Note:** Most SAP public demo services (ES5) are being decommissioned as of October 31, 2025.
+**Note:** Most SAP public demo services (ES5) are being
+decommissioned as of October 31, 2025.
 
 **Alternative:** SAP API Business Hub
-- **URL:** https://api.sap.com
+
+- **URL:** <https://api.sap.com>
 - Browse all SAP APIs
 - Sandbox environments available
 - Requires SAP account (free)
@@ -1850,13 +1961,15 @@ https://services.odata.org/V4/TripPinServiceRW/
 #### Issue 1: "Service URL cannot be reached"
 
 **Symptoms:**
+
 - Generator fails to connect
 - "Network error" message
 
 **Solutions:**
 
 1. **Test URL in browser first:**
-   ```
+
+   ```text
    https://services.odata.org/V2/Northwind/Northwind.svc/$metadata
    ```
 
@@ -1872,12 +1985,14 @@ https://services.odata.org/V4/TripPinServiceRW/
 #### Issue 2: "BatchSegment translation is not supported"
 
 **Symptoms:**
+
 - OData V4 service fails
 - Batch error in console
 
 **Solution:**
 
 Edit `manifest.json` models section:
+
 ```json
 "": {
   "dataSource": "mainService",
@@ -1896,6 +2011,7 @@ Edit `manifest.json` models section:
 #### Issue 3: "No data displayed in app"
 
 **Symptoms:**
+
 - App loads but table is empty
 - No error messages
 
@@ -1906,7 +2022,8 @@ Edit `manifest.json` models section:
    - Check Network tab for failed requests
 
 2. **Verify OData service:**
-   ```
+
+   ```text
    https://services.odata.org/V2/Northwind/Northwind.svc/Products?$format=json&$top=1
    ```
 
@@ -1917,12 +2034,14 @@ Edit `manifest.json` models section:
 #### Issue 4: "Certificate has expired"
 
 **Symptoms:**
+
 - SSL/TLS errors
 - Certificate warnings
 
 **Solution:**
 
 Add to `ui5.yaml`:
+
 ```yaml
 server:
   customMiddleware:
@@ -1937,19 +2056,22 @@ server:
 #### Issue 5: "Port 8080 already in use"
 
 **Symptoms:**
+
 - Cannot start server
 - Port conflict error
 
 **Solutions:**
 
-**Option 1: Kill existing process**
+#### Option 1: Kill existing process
+
 ```bash
 npx kill-port 8080
 ```
 
-**Option 2: Use different port**
+#### Option 2: Use different port
 
 Edit `package.json`:
+
 ```json
 "scripts": {
   "start": "fiori run --port 8081 --open ..."
@@ -1959,6 +2081,7 @@ Edit `package.json`:
 #### Issue 6: "Module not found" errors
 
 **Symptoms:**
+
 - Import/require errors
 - Missing dependencies
 
@@ -2069,7 +2192,7 @@ When things don't work, check in this order:
 ### Essential URLs
 
 | What | URL Pattern |
-|------|-------------|
+| ------ | ------------- |
 | Service Root | `https://host/path/Service.svc/` |
 | Metadata | `https://host/path/Service.svc/$metadata` |
 | Entity Set | `https://host/path/Service.svc/Products` |
@@ -2134,16 +2257,16 @@ GET /Products?$filter=UnitPrice gt 20&$orderby=ProductName&$top=10&$select=Produ
 
 ### Official Documentation
 
-- **OData.org:** https://www.odata.org
-- **SAP UI5 SDK:** https://ui5.sap.com
-- **SAP API Hub:** https://api.sap.com
-- **SAP Fiori Guidelines:** https://experience.sap.com/fiori-design-web/
+- **OData.org:** <https://www.odata.org>
+- **SAP UI5 SDK:** <https://ui5.sap.com>
+- **SAP API Hub:** <https://api.sap.com>
+- **SAP Fiori Guidelines:** <https://experience.sap.com/fiori-design-web/>
 
 ### Learning Resources
 
-- **SAP Developer Tutorials:** https://developers.sap.com/tutorial-navigator.html
-- **openSAP Courses:** https://open.sap.com
-- **SAP Community:** https://community.sap.com
+- **SAP Developer Tutorials:** <https://developers.sap.com/tutorial-navigator.html>
+- **openSAP Courses:** <https://open.sap.com>
+- **SAP Community:** <https://community.sap.com>
 
 ### Tools
 
